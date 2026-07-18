@@ -996,20 +996,28 @@ fp1_varangian_adventurer_conquest = {
 			# Conquering tribes makes you tribal.
 			if = {
 				limit = {
-					capital_province = { has_holding_type = tribal_holding }
-					NOT = { government_has_flag = government_is_tribal }
+					capital_province = { OR = {
+						has_holding_type = tribal_holding
+						has_holding_type = nomad_holding
+						has_holding_type = herder_holding
+					} }
 				}
-				# Change government to tribal.
-				change_government = tribal_government
+				if = {
+					limit = {
+						NOR = {
+							government_has_flag = government_is_tribal
+							government_has_flag = government_is_nomadic
+							government_has_flag = government_is_herder
+						}
+					}
+					# Change government to tribal.
+					change_government = tribal_government
+				}
 			}
 			# Conquering elsewhere as a tribal makes you feudal.
 			else_if = {
 				limit = {
-					NOT = {
-						capital_province = { has_holding_type = tribal_holding }
-					}
-					# Might have turned theocratic before from gaining a new capital holding
-					#government_has_flag = government_is_tribal
+					NOT = { government_has_flag = government_is_feudal }
 				}
 				# Change government to feudal.
 				change_government = feudal_government
